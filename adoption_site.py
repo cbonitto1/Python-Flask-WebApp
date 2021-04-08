@@ -39,16 +39,11 @@ class Puppy(db.Model):
 
     def __repr__(self):
          # ensures that nothing is left blank
-        if self.color != None and self.breed != None and self.name != None: # edit the rest
-            return f""" The Puppy is a {self.color}, {self.breed} named {self.name} looking for an owner"""
-        elif self.owners == False and self.color != None and self.breed != None and self.name != None:
-            return f"""The Puppy is a {self.color}, {self.breed} with id {self.id}"""
-        if self.owners == True:
-            return f" and owner is {self.owners.name}"
-        elif self.owners == False:
-             return f" please assign an owner"
+        if self.owners: 
+            return f"Puppy name is {self.name} and owner is {self.owners.name} "#new
         else:
-            return f"Please ensure that all fields are entered and delete this puppy id {self.id}"
+            return f"""Puppy is a {self.color}, {self.breed} named {self.name}with id {self.id}
+             please assign an owner"""
 
 class owners(db.Model):
 
