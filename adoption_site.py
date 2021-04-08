@@ -29,18 +29,24 @@ class Puppy(db.Model):
     owners = db.relationship('owners',backref='puppy',uselist=False)
 
 
-    def __init__(self,name,color,breed):
+    def __init__(self,name,color,breed,id):
         self.name = name
         self.color = color
         self.breed = breed
+        self.id = id #added so owners have greater ease of access
+
+
 
     def __repr__(self):
         if self.owners: # edit the rest
             return f""" The Puppy is a {self.color}, {self.breed} named {self.name}
             and owner is {self.owners.name}"""
-        else:
-            return f"""The Puppy is a {self.color}, {self.breed} please assign an owner and ensure
+        elif self.owners == False:
+            return f"""The Puppy is a {self.color}, {self.breed} with id {self.id} please assign an owner and ensure
             that all fields are entered"""
+        else:
+            return f""" The Puppy is a {self.color}, {self.breed} named {self.name}
+            and owner is {self.owners}"""
 
 class owners(db.Model):
 
@@ -93,7 +99,7 @@ def add_owner():
         name = form.name.data
         pup_id = form.pup_id.data
         # Add new owner to database
-        new_owner = Owner(name,pup_id)
+        new_owner = owners(name,pup_id)#solved name error by changing Owner to owners
         db.session.add(new_owner)
         db.session.commit()
 
@@ -115,7 +121,7 @@ def del_pup():
     if form.validate_on_submit():
        id = form.id.data
        pup = Puppy.query.get(id)
-       if pup != None:
+       if pup != None:# new code as recommended in supplemental lecture
           db.session.delete(pup)
           db.session.commit()
 
