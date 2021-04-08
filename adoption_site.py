@@ -29,24 +29,26 @@ class Puppy(db.Model):
     owners = db.relationship('owners',backref='puppy',uselist=False)
 
 
-    def __init__(self,name,color,breed,id):
+    def __init__(self,name,color,breed):
         self.name = name
         self.color = color
         self.breed = breed
-        self.id = id #added so owners have greater ease of access
+
 
 
 
     def __repr__(self):
-        if self.owners: # edit the rest
-            return f""" The Puppy is a {self.color}, {self.breed} named {self.name}
-            and owner is {self.owners.name}"""
+         # ensures that nothing is left blank
+        if self.color != None and self.breed != None and self.name != None: # edit the rest
+            return f""" The Puppy is a {self.color}, {self.breed} named {self.name} looking for an owner"""
+        elif self.owners == False and self.color != None and self.breed != None and self.name != None:
+            return f"""The Puppy is a {self.color}, {self.breed} with id {self.id}"""
+        if self.owners == True:
+            return f" and owner is {self.owners.name}"
         elif self.owners == False:
-            return f"""The Puppy is a {self.color}, {self.breed} with id {self.id} please assign an owner and ensure
-            that all fields are entered"""
+             return f" please assign an owner"
         else:
-            return f""" The Puppy is a {self.color}, {self.breed} named {self.name}
-            and owner is {self.owners}"""
+            return f"Please ensure that all fields are entered and delete this puppy id {self.id}"
 
 class owners(db.Model):
 
